@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { requestConfig } from '../config/axios';
 import axios from 'axios';
 
 function Home() {
   // next is loaders
   const [form, setForm] = useState({ username: '', password: '' });
+  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState('');
+  const navigate = useNavigate();
   const handleChange = (e) => {
     const { id, value } = e.target;
     setForm((oldForm) => {
@@ -15,15 +18,19 @@ function Home() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const user = await axios.post(
+      setLoading(true);
+      const data = await axios.post(
         `http://localhost:5500/`,
         form,
         requestConfig
       );
-      const data = await user.data;
-      console.log(data);
+      setLoading(false);
+      setErr('');
+      navigate('signin');
     } catch (error) {
-      console.log(error);
+      setErr(error.response.data.message);
+      setForm((oldForm) => ({ ...oldForm, password: '' }));
+      setLoading(false);
     }
   };
   return (
@@ -31,14 +38,17 @@ function Home() {
       <div className="flex flex-col w-1/4">
         <h1 className="p-2 text-xl font-bold text-center">Sign up</h1>
         <div className="flex flex-col space-y-4">
-          <input
-            type="text"
-            className="p-4 border rounded bg-slate-100"
-            placeholder="Username"
-            id="username"
-            value={form.username}
-            onChange={(e) => handleChange(e)}
-          />
+          <div className="flex flex-col">
+            <span className="text-red-500 text-sm">{err ?? ''}</span>
+            <input
+              type="text"
+              className="p-4 border rounded bg-slate-100"
+              placeholder="Username"
+              id="username"
+              value={form.username}
+              onChange={(e) => handleChange(e)}
+            />
+          </div>
 
           <input
             type="password"
@@ -49,10 +59,11 @@ function Home() {
             onChange={(e) => handleChange(e)}
           />
           <button
-            className="p-4 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600"
+            disabled={!form.username || !form.password}
+            className="p-4 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-blue-300"
             onClick={(e) => handleSubmit(e)}
           >
-            Sign up
+            {loading ? 'Loading' : 'Sign up'}
           </button>
           <p>
             Already have an account?{' '}
