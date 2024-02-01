@@ -3,12 +3,14 @@ import express from 'express';
 import dotenv from 'dotenv';
 import dbCon from './config/dbCon.js';
 import mongoose from 'mongoose';
+import cors from 'cors';
+import corsOptions from './config/corsOptions.js';
 const app = express();
 
 const PORT = 5500;
-dotenv.config();
-
+dotenv.config(corsOptions);
 dbCon();
+app.use(cors());
 app.use(express.json());
 app.use('/', indexRouter);
 app.use((err, req, res, next) => {
