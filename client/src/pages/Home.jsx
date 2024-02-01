@@ -19,11 +19,7 @@ function Home() {
     e.preventDefault();
     try {
       setLoading(true);
-      const data = await axios.post(
-        `http://localhost:5500/`,
-        form,
-        requestConfig
-      );
+      await axios.post(`http://localhost:5500/`, form, requestConfig);
       setLoading(false);
       setErr('');
       navigate('signin');
