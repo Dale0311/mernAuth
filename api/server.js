@@ -11,6 +11,14 @@ dotenv.config();
 dbCon();
 app.use(express.json());
 app.use('/', indexRouter);
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  const errMessage = statusCode === 500 ? 'Internal Server Error' : err.message;
+  res
+    .status(statusCode)
+    .json({ success: false, message: errMessage, statusCode });
+});
+
 mongoose.connection.once('open', () => {
   app.listen(PORT, () => {
     console.log(`Server listen in PORT ${PORT}`);
