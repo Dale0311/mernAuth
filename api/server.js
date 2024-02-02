@@ -1,4 +1,5 @@
 import signUp from './routes/signUp.js';
+import signIn from './routes/signin.js';
 import express from 'express';
 import dotenv from 'dotenv';
 import dbCon from './config/dbCon.js';
@@ -13,7 +14,7 @@ dbCon();
 app.use(cors());
 app.use(express.json());
 app.use('/', signUp);
-app.use('signin', signin);
+app.use('/signin', signIn);
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const errMessage = statusCode === 500 ? 'Internal Server Error' : err.message;
