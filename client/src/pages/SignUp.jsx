@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { requestConfig } from '../config/axios';
 import axios from 'axios';
 
-function SignIn() {
+function SignUp() {
   // next is loaders
   const [form, setForm] = useState({ username: '', password: '' });
   const [loading, setLoading] = useState(false);
@@ -19,16 +19,10 @@ function SignIn() {
     e.preventDefault();
     try {
       setLoading(true);
-      const data = await axios.post(
-        `http://localhost:5500/signin`,
-        form,
-        requestConfig
-      );
+      await axios.post(`http://localhost:5500/signup`, form, requestConfig);
       setLoading(false);
       setErr('');
-      // jwt /
-      // implement redux toolkit
-      navigate('/');
+      navigate('/signin');
     } catch (error) {
       setErr(error.response.data.message);
       setForm((oldForm) => ({ ...oldForm, password: '' }));
@@ -38,7 +32,7 @@ function SignIn() {
   return (
     <div className="flex justify-center">
       <div className="flex flex-col w-1/4">
-        <h1 className="p-2 text-xl font-bold text-center">Sign In</h1>
+        <h1 className="p-2 text-xl font-bold text-center">Sign up</h1>
         <div className="flex flex-col space-y-4">
           <div className="flex flex-col">
             <span className="text-red-500 text-sm">{err ?? ''}</span>
@@ -65,12 +59,12 @@ function SignIn() {
             className="p-4 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-blue-300"
             onClick={(e) => handleSubmit(e)}
           >
-            {loading ? 'Loading' : 'Sign in'}
+            {loading ? 'Loading' : 'Sign up'}
           </button>
           <p>
-            Don't have an account?{' '}
-            <Link to={'/signup'} className="text-blue-500 mx-2 hover:underline">
-              sign up here
+            Already have an account?{' '}
+            <Link to={'signin'} className="text-blue-500 mx-2 hover:underline">
+              sign in here
             </Link>
           </p>
         </div>
@@ -79,4 +73,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default SignUp;
