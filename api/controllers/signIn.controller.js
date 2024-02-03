@@ -4,18 +4,18 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 const handleReq = async (req, res, next) => {
-  const { username, password } = req.body;
-  if (!username || !password) return res.sendStatus(400);
+  const { username, password: pwd } = req.body;
+  if (!username || !pwd) return res.sendStatus(400);
   const userExist = await User.findOne({ username }).exec();
   if (!userExist) return res.status(404).json({ message: 'No user found' });
-  const hashPassword = await bcrypt.hash(password, 10);
   try {
     const accessToken = jwt.sign(
       { id: userExist._id },
       process.env.ACCESS_TOKEN,
       { expiresIn: '3h' }
     );
-    const match = await bcrypt.compare(userExist.password, hashPassword);
+    const match = await bcrypt.compare(pwd, userExist.password);
+    console.log(match);
     const { password, ...rest } = userExist._doc;
     if (!match)
       return res
@@ -29,6 +29,7 @@ const handleReq = async (req, res, next) => {
       .status(200)
       .json(rest);
   } catch (error) {
+    console.log(error);
     next(errorHandler(500));
   }
 };
