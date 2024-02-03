@@ -4,7 +4,6 @@ import { requestConfig } from '../config/axios';
 import axios from 'axios';
 
 function SignIn() {
-  // next is loaders
   const [form, setForm] = useState({ username: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState('');

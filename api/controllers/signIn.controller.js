@@ -15,7 +15,7 @@ const handleReq = async (req, res, next) => {
       process.env.ACCESS_TOKEN,
       { expiresIn: '3h' }
     );
-    const match = bcrypt.compare(userExist.password, hashPassword);
+    const match = await bcrypt.compare(userExist.password, hashPassword);
     const { password, ...rest } = userExist._doc;
     if (!match)
       return res
