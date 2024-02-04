@@ -15,7 +15,6 @@ const handleReq = async (req, res, next) => {
       { expiresIn: '3h' }
     );
     const match = await bcrypt.compare(pwd, userExist.password);
-    console.log(match);
     const { password, ...rest } = userExist._doc;
     if (!match)
       return res

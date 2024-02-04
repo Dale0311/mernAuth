@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { requestConfig } from '../config/axios';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  signInError,
+  signInStart,
+  signInSuccess,
+} from '../features/users/userSlice';
 import axios from 'axios';
 
 function SignIn() {
   const [form, setForm] = useState({ username: '', password: '' });
-  const [loading, setLoading] = useState(false);
-  const [err, setErr] = useState('');
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.user.loading);
+  console.log(loading);
   const navigate = useNavigate();
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -17,21 +24,17 @@ function SignIn() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true);
+      dispatch(signInStart);
       const data = await axios.post(
         `http://localhost:5500/signin`,
         form,
         requestConfig
       );
-      setLoading(false);
-      setErr('');
-      // jwt /
-      // implement redux toolkit
+      dispatch(signInSuccess(data.data));
       navigate('/');
-    } catch (error) {
-      setErr(error.response.data.message);
+    } catch (err) {
+      dispatch(signInError(err));
       setForm((oldForm) => ({ ...oldForm, password: '' }));
-      setLoading(false);
     }
   };
   return (
@@ -40,7 +43,7 @@ function SignIn() {
         <h1 className="p-2 text-xl font-bold text-center">Sign In</h1>
         <div className="flex flex-col space-y-4">
           <div className="flex flex-col">
-            <span className="text-red-500 text-sm">{err ?? ''}</span>
+            <span className="text-red-500 text-sm">{error ? 'Error' : ''}</span>
             <input
               type="text"
               className="p-4 border rounded bg-slate-100"
