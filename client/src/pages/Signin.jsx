@@ -12,8 +12,7 @@ import axios from 'axios';
 function SignIn() {
   const [form, setForm] = useState({ username: '', password: '' });
   const dispatch = useDispatch();
-  const loading = useSelector((state) => state.user.loading);
-  console.log(loading);
+  const { loading, error } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -24,7 +23,7 @@ function SignIn() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      dispatch(signInStart);
+      dispatch(signInStart());
       const data = await axios.post(
         `http://localhost:5500/signin`,
         form,
@@ -33,7 +32,7 @@ function SignIn() {
       dispatch(signInSuccess(data.data));
       navigate('/');
     } catch (err) {
-      dispatch(signInError(err));
+      dispatch(signInError(err.response.data.message));
       setForm((oldForm) => ({ ...oldForm, password: '' }));
     }
   };
@@ -43,7 +42,7 @@ function SignIn() {
         <h1 className="p-2 text-xl font-bold text-center">Sign In</h1>
         <div className="flex flex-col space-y-4">
           <div className="flex flex-col">
-            <span className="text-red-500 text-sm">{error ? 'Error' : ''}</span>
+            <span className="text-red-500 text-sm">{error ?? ''}</span>
             <input
               type="text"
               className="p-4 border rounded bg-slate-100"
