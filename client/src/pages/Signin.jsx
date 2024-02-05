@@ -7,6 +7,7 @@ import {
   signInStart,
   signInSuccess,
 } from '../features/users/userSlice';
+import OAuth from '../components/OAuth';
 import axios from 'axios';
 
 function SignIn() {
@@ -52,7 +53,6 @@ function SignIn() {
               onChange={(e) => handleChange(e)}
             />
           </div>
-
           <input
             type="password"
             className="p-4 border rounded bg-slate-100"
@@ -68,6 +68,7 @@ function SignIn() {
           >
             {loading ? 'Loading' : 'Sign in'}
           </button>
+          <OAuth />
           <p>
             Don't have an account?{' '}
             <Link to={'/signup'} className="text-blue-500 mx-2 hover:underline">
