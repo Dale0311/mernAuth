@@ -3,12 +3,17 @@ import { GoogleAuthProvider, signInWithPopup, getAuth } from 'firebase/auth';
 function OAuth() {
   const provider = new GoogleAuthProvider();
   const auth = getAuth(app);
+
   const handleClick = async () => {
     const res = await signInWithPopup(auth, provider);
-    // create a new user here
     // error: A non-serializable value was detected in an action, in the path: `register`. Value:
     // create a endpoint @server
-    console.log(res);
+    const randomNum = Math.floor(Math.random() * 1000);
+    const displayName =
+      res.user.displayName.split(' ').join('').toLowerCase() + randomNum;
+    const password = Math.random().toString(36).slice(-8);
+    const newUser = { displayName, username: res.user.email, password };
+    console.log(newUser);
   };
   return (
     <button

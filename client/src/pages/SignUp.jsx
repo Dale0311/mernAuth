@@ -5,7 +5,11 @@ import axios from 'axios';
 
 function SignUp() {
   // next is loaders
-  const [form, setForm] = useState({ username: '', password: '' });
+  const [form, setForm] = useState({
+    displayName: '',
+    username: '',
+    password: '',
+  });
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState('');
   const navigate = useNavigate();
@@ -34,6 +38,14 @@ function SignUp() {
       <div className="flex flex-col w-1/4">
         <h1 className="p-2 text-xl font-bold text-center">Sign up</h1>
         <div className="flex flex-col space-y-4">
+          <input
+            type="text"
+            className="p-4 border rounded bg-slate-100"
+            placeholder="Display Name"
+            id="displayName"
+            value={form.displayName}
+            onChange={(e) => handleChange(e)}
+          />
           <div className="flex flex-col">
             <span className="text-red-500 text-sm">{err ?? ''}</span>
             <input
