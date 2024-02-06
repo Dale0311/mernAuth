@@ -31,6 +31,7 @@ function SignIn() {
         requestConfig
       );
       dispatch(signInSuccess(data.data));
+      setForm({ username: '', password: '' });
       navigate('/');
     } catch (err) {
       dispatch(signInError(err.response.data.message));

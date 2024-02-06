@@ -1,19 +1,31 @@
 import { app } from '../config/firebase';
+import axios from 'axios';
+import { requestConfig } from '../config/axios';
+import { signInSuccess } from '../features/users/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import { GoogleAuthProvider, signInWithPopup, getAuth } from 'firebase/auth';
 function OAuth() {
+  const dispatch = useDispatch();
   const provider = new GoogleAuthProvider();
   const auth = getAuth(app);
 
   const handleClick = async () => {
     const res = await signInWithPopup(auth, provider);
-    // error: A non-serializable value was detected in an action, in the path: `register`. Value:
-    // create a endpoint @server
     const randomNum = Math.floor(Math.random() * 1000);
     const displayName =
       res.user.displayName.split(' ').join('').toLowerCase() + randomNum;
     const password = Math.random().toString(36).slice(-8);
     const newUser = { displayName, username: res.user.email, password };
-    console.log(newUser);
+    try {
+      const data = await axios.post(
+        'http://localhost:5500/google',
+        newUser,
+        requestConfig
+      );
+      dispatch(signInSuccess(data.data));
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <button

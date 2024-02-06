@@ -28,7 +28,6 @@ const handleReq = async (req, res, next) => {
       .status(200)
       .json(rest);
   } catch (error) {
-    console.log(error);
     next(errorHandler(500));
   }
 };
