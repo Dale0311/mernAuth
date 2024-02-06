@@ -9,6 +9,8 @@ import About from './pages/About';
 import Signin from './pages/Signin';
 import Layout from './components/Layout';
 import SignUp from './pages/SignUp';
+import Profile from './pages/Profile';
+import PrivateRoute from './components/PrivateRoute';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -18,6 +20,9 @@ const router = createBrowserRouter(
         <Route path="about" element={<About />} />
         <Route path="signin" element={<Signin />} />
         <Route path="signup" element={<SignUp />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="profile" element={<Profile />} />
+        </Route>
       </Route>
     </Route>
   )

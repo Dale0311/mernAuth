@@ -2,13 +2,14 @@ import { app } from '../config/firebase';
 import axios from 'axios';
 import { requestConfig } from '../config/axios';
 import { signInSuccess } from '../features/users/userSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { GoogleAuthProvider, signInWithPopup, getAuth } from 'firebase/auth';
 function OAuth() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const provider = new GoogleAuthProvider();
   const auth = getAuth(app);
-
   const handleClick = async () => {
     const res = await signInWithPopup(auth, provider);
     const randomNum = Math.floor(Math.random() * 1000);
@@ -23,6 +24,7 @@ function OAuth() {
         requestConfig
       );
       dispatch(signInSuccess(data.data));
+      navigate('/');
     } catch (error) {
       console.log(error);
     }
