@@ -1,9 +1,11 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { FaRegEdit } from 'react-icons/fa';
 import { MdDeleteOutline } from 'react-icons/md';
 function Profile() {
   const { currentUser } = useSelector((state) => state.user);
+  const [editActive, setEditActive] = useState(false);
+  const [displayName, setdisplayName] = useState(currentUser.displayName);
   const imageRef = useRef(null);
   const handleImageClick = () => {
     imageRef.current.click();
@@ -25,8 +27,26 @@ function Profile() {
             onClick={handleImageClick}
           />
           <div className="flex flex-col">
-            <h1 className="text-2xl font-bold">{currentUser.displayName}</h1>
-            <h3 className="text-sm ">{currentUser.username}</h3>
+            {editActive ? (
+              <div>
+                <input
+                  type="text"
+                  className="text-2xl font-bold"
+                  name="displayName"
+                  value={displayName}
+                  // dito nako
+                  // onChange={}
+                />
+                <input type="text" />
+              </div>
+            ) : (
+              <div>
+                <h1 className="text-2xl font-bold">
+                  {currentUser.displayName}
+                </h1>
+                <h3 className="text-sm ">{currentUser.username}</h3>
+              </div>
+            )}
             <div className="flex items-center mt-2">
               <FaRegEdit className="hover:text-blue-500 text-xl cursor-pointer" />
               <MdDeleteOutline className="hover:text-red-500 text-2xl cursor-pointer" />
