@@ -16,7 +16,12 @@ function OAuth() {
     const displayName =
       res.user.displayName.split(' ').join('').toLowerCase() + randomNum;
     const password = Math.random().toString(36).slice(-8);
-    const newUser = { displayName, username: res.user.email, password };
+    const newUser = {
+      displayName,
+      username: res.user.email,
+      password,
+      photo: res.user.photoURL,
+    };
     try {
       const data = await axios.post(
         'http://localhost:5500/google',

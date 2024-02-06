@@ -3,7 +3,7 @@ import User from '../models/User.model.js';
 import jwt from 'jsonwebtoken';
 import { errorHandler } from '../middleware/error.js';
 const googleAuth = async (req, res, next) => {
-  const { username, displayName, password } = req.body;
+  const { username, displayName, password, photo } = req.body;
 
   //handle validation
   if (!username)
@@ -33,6 +33,7 @@ const googleAuth = async (req, res, next) => {
       displayName,
       username,
       password: hashPassword,
+      photo,
     });
     const accessToken = jwt.sign(
       { id: newUser._id },
