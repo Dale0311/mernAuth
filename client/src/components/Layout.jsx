@@ -5,10 +5,12 @@ function Layout() {
   const { currentUser } = useSelector((state) => state.user);
 
   return (
-    <div className="flex flex-col justify-between min-h-screen">
+    <div className="flex flex-col min-h-screen justify-between">
       <nav className="bg-slate-400">
         <div className="flex justify-between items-center w-4/5 mx-auto p-4">
-          <h1 className="text-xl font-bold">Auth App</h1>
+          <NavLink className="text-xl font-bold" to=".">
+            Auth App
+          </NavLink>
           <ul className="flex space-x-8 items-center">
             <li>
               <NavLink to=".">Home</NavLink>
