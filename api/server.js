@@ -1,6 +1,8 @@
 import signUp from './routes/signUp.js';
 import signIn from './routes/signin.js';
 import google from './routes/google.js';
+import profile from './routes/user.js';
+
 import express from 'express';
 import dotenv from 'dotenv';
 import dbCon from './config/dbCon.js';
@@ -11,15 +13,16 @@ import cookieParser from 'cookie-parser';
 const app = express();
 
 const PORT = 5500;
-dotenv.config(corsOptions);
+dotenv.config();
 dbCon();
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
 app.use('/signup', signUp);
 app.use('/signin', signIn);
 app.use('/google', google);
+app.use('/profile', profile);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;

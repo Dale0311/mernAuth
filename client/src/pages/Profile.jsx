@@ -23,7 +23,11 @@ function Profile() {
   };
   const handleClickSave = async () => {
     const toUpdateUser = { id: currentUser._id, displayName };
-    const res = await axios.put('some url here', toUpdateUser, requestConfig);
+    const res = await axios.put(
+      'http://localhost:5500/profile',
+      toUpdateUser,
+      requestConfig
+    );
   };
   return (
     <div className="flex justify-center">
