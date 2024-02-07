@@ -2,6 +2,8 @@ import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { FaRegEdit } from 'react-icons/fa';
 import { MdDeleteOutline } from 'react-icons/md';
+import { useDispatch } from 'react-redux';
+import { updateCurrentUser } from '../features/users/userSlice';
 import axios from 'axios';
 import { requestConfig } from '../config/axios';
 function Profile() {
@@ -9,7 +11,7 @@ function Profile() {
   const [editActive, setEditActive] = useState(false);
   const [displayName, setdisplayName] = useState(currentUser.displayName);
   const imageRef = useRef(null);
-
+  const dispatch = useDispatch();
   const handleImageClick = () => {
     imageRef.current.click();
   };
@@ -23,11 +25,17 @@ function Profile() {
   };
   const handleClickSave = async () => {
     const toUpdateUser = { id: currentUser._id, displayName };
-    const res = await axios.put(
-      'http://localhost:5500/profile',
-      toUpdateUser,
-      requestConfig
-    );
+    try {
+      const res = await axios.put(
+        'http://localhost:5500/profile',
+        toUpdateUser,
+        requestConfig
+      );
+      dispatch(updateCurrentUser(res.data));
+      setEditActive(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div className="flex justify-center">
