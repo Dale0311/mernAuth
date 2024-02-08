@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use('/', auth);
-app.use('/profile', profile);
+app.use('/', profile);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;

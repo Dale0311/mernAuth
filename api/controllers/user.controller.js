@@ -1,5 +1,5 @@
 import User from '../models/User.model.js';
-const updateUser = async (req, res) => {
+export const updateUser = async (req, res) => {
   const { displayName, id } = req.body;
   let userExist = await User.findOne({ _id: id }).exec();
   if (!userExist) return res.sendStatus(404);
@@ -9,4 +9,13 @@ const updateUser = async (req, res) => {
     res.status(200).json(userExist);
   } catch (error) {}
 };
-export default updateUser;
+
+export const verifyUser = async (req, res) => {
+  const { username } = req.params;
+  if (!username) return res.sendStatus(401);
+  const userExist = await User.findOne({ username }).exec();
+  if (!userExist) return res.sendStatus(404);
+  // dito na me
+
+  res.sendStatus(200);
+};

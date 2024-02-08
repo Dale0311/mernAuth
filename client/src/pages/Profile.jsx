@@ -1,17 +1,33 @@
-import { useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useRef, useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { FaRegEdit } from 'react-icons/fa';
 import { MdDeleteOutline } from 'react-icons/md';
-import { useDispatch } from 'react-redux';
 import { updateCurrentUser } from '../features/users/userSlice';
 import axios from 'axios';
 import { requestConfig } from '../config/axios';
+import { useParams } from 'react-router-dom';
+
 function Profile() {
+  // variables
   const { currentUser } = useSelector((state) => state.user);
   const [editActive, setEditActive] = useState(false);
   const [displayName, setdisplayName] = useState(currentUser.displayName);
   const imageRef = useRef(null);
   const dispatch = useDispatch();
+  const { username } = useParams();
+  if (!username) {
+    console.log('no username');
+  }
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const res = await axios.get(
+        `http://localhost:5500/${username}`,
+        requestConfig
+      );
+      console.log(res);
+    };
+    fetchUserData();
+  }, []);
   const handleImageClick = () => {
     imageRef.current.click();
   };
@@ -37,6 +53,7 @@ function Profile() {
       console.log(error);
     }
   };
+
   return (
     <div className="flex justify-center">
       <div className="w-1/4 border  rounded">
