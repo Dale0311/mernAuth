@@ -1,6 +1,4 @@
-import signUp from './routes/signUp.js';
-import signIn from './routes/signin.js';
-import google from './routes/google.js';
+import auth from './routes/auth.route.js';
 import profile from './routes/user.js';
 
 import express from 'express';
@@ -19,9 +17,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
-app.use('/signup', signUp);
-app.use('/signin', signIn);
-app.use('/google', google);
+app.use('/', auth);
 app.use('/profile', profile);
 
 app.use((err, req, res, next) => {
