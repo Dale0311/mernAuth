@@ -3,6 +3,6 @@ import { updateUser, verifyUser } from '../controllers/user.controller.js';
 const router = express.Router();
 
 router.get('/:username', verifyUser);
-router.put('/', updateUser);
+router.put('/:username/update', updateUser);
 
 export default router;

@@ -19,7 +19,7 @@ function Layout() {
               <NavLink to="about">About</NavLink>
             </li>
             <li>
-              <NavLink to="profile">
+              <NavLink to={`/${currentUser?.username}`}>
                 {currentUser ? (
                   <img
                     src={`${currentUser.photo}`}
