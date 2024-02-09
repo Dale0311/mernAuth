@@ -42,15 +42,13 @@ function Profile() {
     setDisplayName(value);
   };
   const handleClickSave = async () => {
-    const toUpdateUser = { id: currentUser._id, displayName };
+    const toUpdateUser = { id: currentProfile._id, displayName };
     try {
-      const res = await axios.put(
-        `api/${username}/update`,
-        toUpdateUser,
-        requestConfig
-      );
+      const res = await axios.put(`api/user/${username}/update`, toUpdateUser);
       dispatch(updateCurrentUser(res.data));
-      navigate(`/${username}`);
+      setCurrentProfile((oldVal) => {
+        return { ...oldVal, displayName: res.data.displayName };
+      });
       setEditActive(false);
     } catch (error) {
       console.log(error);
