@@ -26,7 +26,7 @@ function SignIn() {
     try {
       dispatch(signInStart());
       const data = await axios.post(
-        `http://localhost:5500/signin`,
+        `http://localhost:5500/api/signin`,
         form,
         requestConfig
       );

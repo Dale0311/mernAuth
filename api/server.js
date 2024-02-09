@@ -5,20 +5,18 @@ import express from 'express';
 import dotenv from 'dotenv';
 import dbCon from './config/dbCon.js';
 import mongoose from 'mongoose';
-import cors from 'cors';
-import corsOptions from './config/corsOptions.js';
+
 import cookieParser from 'cookie-parser';
 const app = express();
 
 const PORT = 5500;
 dotenv.config();
 dbCon();
-app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
-app.use('/', auth);
-app.use('/', profile);
+app.use('/api/auth', auth);
+app.use('/api/user', profile);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;

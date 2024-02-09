@@ -5,17 +5,15 @@ import { errorHandler } from '../middleware/error.js';
 
 export const googleAuthController = async (req, res, next) => {
   const { username, displayName, password, photo } = req.body;
-
   //handle validation
   if (!username)
     return res.status(400).json({ messsage: 'username is required' });
   const userExist = await User.findOne({ username }).exec();
-
   //if there's an existing user
   if (userExist) {
     const { password, ...rest } = userExist._doc;
     const accessToken = jwt.sign(
-      { id: userExist._id },
+      { username: userExist.username },
       process.env.ACCESS_TOKEN,
       { expiresIn: '3h' }
     );
@@ -37,7 +35,7 @@ export const googleAuthController = async (req, res, next) => {
       photo,
     });
     const accessToken = jwt.sign(
-      { id: newUser._id },
+      { username: newUser.username },
       process.env.ACCESS_TOKEN,
       { expiresIn: '3h' }
     );
@@ -61,7 +59,7 @@ export const signInController = async (req, res, next) => {
   if (!userExist) return res.status(404).json({ message: 'No user found' });
   try {
     const accessToken = jwt.sign(
-      { id: userExist._id },
+      { username: newUser.username },
       process.env.ACCESS_TOKEN,
       { expiresIn: '3h' }
     );

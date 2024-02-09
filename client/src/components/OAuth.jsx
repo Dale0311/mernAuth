@@ -1,6 +1,5 @@
 import { app } from '../config/firebase';
 import axios from 'axios';
-import { requestConfig } from '../config/axios';
 import { signInSuccess } from '../features/users/userSlice';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -23,11 +22,7 @@ function OAuth() {
       photo: res.user.photoURL,
     };
     try {
-      const data = await axios.post(
-        'http://localhost:5500/google',
-        newUser,
-        requestConfig
-      );
+      const data = await axios.post('/api/auth/google', newUser);
       dispatch(signInSuccess(data.data));
       navigate('/');
     } catch (error) {

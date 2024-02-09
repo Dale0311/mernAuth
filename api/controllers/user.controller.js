@@ -15,6 +15,12 @@ export const verifyUser = async (req, res) => {
   if (!username) return res.sendStatus(401);
   const userExist = await User.findOne({ username }).exec();
   if (!userExist) return res.sendStatus(404);
-  const { password, ...rest } = userExist;
-  res.status(200).json(rest._doc);
+  const { password, ...rest } = userExist._doc;
+  if (req.user.username === rest.username) {
+    console.log('goes here');
+    let data = { ...rest, samePerson: true };
+    res.status(200).json(data);
+    return;
+  }
+  res.status(200).json(rest);
 };

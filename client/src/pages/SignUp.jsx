@@ -23,7 +23,7 @@ function SignUp() {
     e.preventDefault();
     try {
       setLoading(true);
-      await axios.post(`http://localhost:5500/signup`, form, requestConfig);
+      await axios.post(`http://localhost:5500/api/signup`, form, requestConfig);
       setLoading(false);
       setErr('');
       navigate('/signin');
